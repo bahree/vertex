@@ -2,22 +2,19 @@
 # Stage 1: Build the application
 FROM node:20-alpine AS builder
 
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-lock.yaml ./
+COPY package.json ./
 
-# Install dependencies
-RUN pnpm install --frozen-lockfile
+# Install dependencies using npm
+RUN npm install
 
 # Copy source files
 COPY . .
 
 # Build the application
-RUN pnpm run build
+RUN npm run build
 
 # Stage 2: Serve with nginx
 FROM nginx:alpine

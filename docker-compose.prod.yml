@@ -1,0 +1,32 @@
+version: '3.8'
+
+# Production Docker Compose configuration
+# This file is optimized for production deployments
+
+services:
+  vertex:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vertex:latest
+    container_name: vertex
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:80"
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - vertex-network
+    labels:
+      - "com.vertex.description=Vertex game application"
+      - "com.vertex.version=1.0.0"
+
+networks:
+  vertex-network:
+    driver: bridge

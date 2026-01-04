@@ -40,6 +40,8 @@ This application can be deployed using Docker and Docker Compose, making it easy
 3. **Access the application:**
    Open your browser and navigate to `http://localhost:3000`
 
+> **Note:** The Docker build requires internet access to download dependencies. If you're in a restricted network environment, you may need to configure proxy settings. See [DOCKER_TESTING.md](DOCKER_TESTING.md) for troubleshooting.
+
 ### Docker Commands
 
 **Build the image:**
@@ -74,6 +76,10 @@ The application includes a health check endpoint at `/health` that returns a 200
 ```bash
 curl http://localhost:3000/health
 ```
+
+### Testing and Troubleshooting
+
+For detailed testing instructions, troubleshooting common issues, and deployment verification, see [DOCKER_TESTING.md](DOCKER_TESTING.md).
 
 ## Reverse Proxy Configuration
 

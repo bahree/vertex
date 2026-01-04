@@ -20,7 +20,7 @@
     }
   },
 
-  "postCreateCommand": "corepack enable && corepack prepare pnpm@latest --activate && pnpm install",
+  "postCreateCommand": "npm install -g pnpm && pnpm install",
 
   "forwardPorts": [5173, 3000],
 
