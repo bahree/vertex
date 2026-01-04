@@ -33,6 +33,13 @@ This application can be deployed using Docker and Docker Compose, making it easy
    ```
 
 2. **Build and run with Docker Compose:**
+   
+   **Option A: Using the deploy script (recommended):**
+   ```bash
+   ./deploy.sh up
+   ```
+   
+   **Option B: Using docker-compose directly:**
    ```bash
    docker-compose up -d
    ```
@@ -41,6 +48,22 @@ This application can be deployed using Docker and Docker Compose, making it easy
    Open your browser and navigate to `http://localhost:3000`
 
 > **Note:** The Docker build requires internet access to download dependencies. If you're in a restricted network environment, you may need to configure proxy settings. See [DOCKER_TESTING.md](DOCKER_TESTING.md) for troubleshooting.
+
+### Using the Deploy Script
+
+The `deploy.sh` script provides convenient commands for managing the Docker deployment:
+
+```bash
+./deploy.sh build    # Build the Docker image
+./deploy.sh up       # Start the container
+./deploy.sh down     # Stop the container
+./deploy.sh restart  # Restart the container
+./deploy.sh logs     # View container logs
+./deploy.sh status   # Show container status
+./deploy.sh test     # Run health checks
+./deploy.sh clean    # Remove container and image
+./deploy.sh help     # Show all commands
+```
 
 ### Docker Commands
 
