@@ -1,0 +1,42 @@
+# Example Caddyfile for reverse proxy configuration
+# Replace 'vertex.example.com' with your actual domain
+
+vertex.example.com {
+    # Automatic HTTPS with Let's Encrypt
+    
+    # Reverse proxy to the Docker container
+    reverse_proxy localhost:3000 {
+        # Health check
+        health_uri /health
+        health_interval 30s
+        health_timeout 5s
+    }
+
+    # Security headers
+    header {
+        # Enable HSTS
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        # Prevent clickjacking
+        X-Frame-Options "SAMEORIGIN"
+        # Prevent MIME type sniffing
+        X-Content-Type-Options "nosniff"
+        # Enable XSS protection
+        X-XSS-Protection "1; mode=block"
+        # Remove server header
+        -Server
+    }
+
+    # Logging
+    log {
+        output file /var/log/caddy/vertex.log
+        format json
+    }
+
+    # Gzip compression
+    encode gzip zstd
+}
+
+# Alternative configuration for running on localhost without domain
+:80 {
+    reverse_proxy localhost:3000
+}

@@ -1,0 +1,26 @@
+# Docker Compose override for development
+# This file is automatically loaded when running docker-compose
+# Rename to docker-compose.override.yml to use
+
+services:
+  vertex:
+    # Use local build
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    # Mount source for development (optional)
+    # Uncomment to enable hot reload during development
+    # volumes:
+    #   - ./src:/app/src
+    #   - ./public:/app/public
+    #   - ./index.html:/app/index.html
+    
+    # Enable debug logging
+    environment:
+      - NODE_ENV=development
+      - DEBUG=*
+    
+    # Different port for development
+    ports:
+      - "3001:80"
