@@ -31,8 +31,13 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-# Check if Docker Compose is installed
-if ! command -v docker-compose &> /dev/null; then
+# Check if Docker Compose is installed (either standalone or plugin)
+DOCKER_COMPOSE_CMD=""
+if command -v docker-compose &> /dev/null; then
+    DOCKER_COMPOSE_CMD="docker-compose"
+elif docker compose version &> /dev/null; then
+    DOCKER_COMPOSE_CMD="docker compose"
+else
     print_error "Docker Compose is not installed. Please install Docker Compose first."
     echo "Visit: https://docs.docker.com/compose/install/"
     exit 1
@@ -52,14 +57,14 @@ case $COMMAND in
     
     up|start)
         print_info "Starting Vertex container..."
-        docker-compose up -d
+        $DOCKER_COMPOSE_CMD up -d
         
         # Wait for container to be healthy
         print_info "Waiting for container to be healthy..."
         sleep 5
         
         # Check if container is running
-        if docker-compose ps | grep -q "Up"; then
+        if $DOCKER_COMPOSE_CMD ps | grep -q "Up"; then
             print_success "Container is running"
             
             # Test health endpoint
@@ -69,43 +74,43 @@ case $COMMAND in
                 print_success "Vertex is now running at http://localhost:3000"
             else
                 print_error "Health check failed"
-                echo "Check logs with: docker-compose logs"
+                echo "Check logs with: $DOCKER_COMPOSE_CMD logs"
             fi
         else
             print_error "Container failed to start"
-            echo "Check logs with: docker-compose logs"
+            echo "Check logs with: $DOCKER_COMPOSE_CMD logs"
             exit 1
         fi
         ;;
     
     down|stop)
         print_info "Stopping Vertex container..."
-        docker-compose down
+        $DOCKER_COMPOSE_CMD down
         print_success "Container stopped"
         ;;
     
     restart)
         print_info "Restarting Vertex container..."
-        docker-compose restart
+        $DOCKER_COMPOSE_CMD restart
         sleep 3
         print_success "Container restarted"
         ;;
     
     logs)
         print_info "Showing container logs..."
-        docker-compose logs -f
+        $DOCKER_COMPOSE_CMD logs -f
         ;;
     
     status)
         print_info "Container status:"
-        docker-compose ps
+        $DOCKER_COMPOSE_CMD ps
         ;;
     
     test)
         print_info "Running tests..."
         
         # Check if container is running
-        if ! docker-compose ps | grep -q "Up"; then
+        if ! $DOCKER_COMPOSE_CMD ps | grep -q "Up"; then
             print_error "Container is not running. Start it with: ./deploy.sh up"
             exit 1
         fi
@@ -133,7 +138,7 @@ case $COMMAND in
     
     clean)
         print_info "Cleaning up Docker resources..."
-        docker-compose down -v
+        $DOCKER_COMPOSE_CMD down -v
         docker rmi vertex:latest 2>/dev/null || true
         print_success "Cleanup complete"
         ;;

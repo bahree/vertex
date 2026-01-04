@@ -5,6 +5,8 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy package files
+# Note: Using npm in Docker for broader compatibility, while local development uses pnpm
+# npm is bundled with Node.js and doesn't require additional installation steps
 COPY package.json ./
 
 # Install dependencies using npm

@@ -1,5 +1,3 @@
-version: '3.8'
-
 # Production Docker Compose configuration
 # This file is optimized for production deployments
 
