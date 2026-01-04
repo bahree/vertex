@@ -1,0 +1,27 @@
+# Dependencies
+node_modules
+pnpm-lock.yaml
+
+# Build output
+dist
+dist-ssr
+
+# Development files
+.vscode
+.idea
+*.log
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+
+# Test files
+*.test.ts
+*.spec.ts
+
+# OS files
+.DS_Store
+Thumbs.db
